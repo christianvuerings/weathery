@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Show the weather in Oostduinkerke (Koksijde), Belgium</title>
+    
+    <!-- JavaScript -->
+    <script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://github.com/carhartl/jquery-cookie/raw/master/jquery.cookie.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://github.com/jamespadolsey/jQuery-Plugins/raw/master/cross-domain-ajax/jquery.xdomainajax.js"></script>
+    <script type="text/javascript" charset="utf-8" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+
+</head>
+<body>
+    <h1 id="title">Weather conditions in Oostduinkerke (Koksijde), Belgium</h1>
+    
+    <script id="googleWidgetTemplate" type="text/x-jquery-tmpl">
+        <h2>${name}</h2>
+        <h3>Current conditions</h3>
+        <ul>
+            <li>Condition: <b>${data.current_conditions.condition.data}</b></li>
+            <li>Humidity: <b>${data.current_conditions.humidity.data}</b></li>
+            <li>Temperature: <b>${data.current_conditions.temperature.data} &#176;C</b></li>
+            <li>Wind: <b>${data.current_conditions.condition.data}</b></li>
+        </ul>
+    </script>
+    
+    <div id="container">
+        &nbsp;
+    </div>
+    
+    <script type="text/javascript" charset="utf-8">
+        
+        // We wouldn't want to clutter the global namespace, do we?
+        (function(){
+            
+            var loadGoogleWidget = function() {
+                
+                var name = this.name;
+                
+                $.ajax({
+                    "url": this.api,
+                    "success": function(data){
+                        
+                        var widget = {
+                            "name": name,
+                            "data": data.query.results.xml_api_reply.weather
+                        };
+                        console.log(widget.data);
+                        $("#googleWidgetTemplate").tmpl(widget).appendTo("#container");
+                        
+                    }
+                });
+                
+            };
+        
+            var widgetsConfiguration = {
+                "google" : {
+                    "method": loadGoogleWidget,
+                    "api": "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20xml%20where%20url%3D%22http%3A%2F%2Fwww.google.com%2Fig%2Fapi%3Fweather%3Doostduinkerke%22&format=json&callback=",
+                    "template": "googleWidgetTemplate",
+                    "name": "Google Weather"
+                }
+            };
+        
+        
+            var loadWidgets = function() {
+
+                // TODO: check wether there is already an existing cookie
+                var toLoadWidgets = ["google"];
+                
+                // Load all the widgets
+                for(var i in widgetsConfiguration) {
+                    if(widgetsConfiguration.hasOwnProperty(i) && $.inArray(i, toLoadWidgets) > -1) {
+                        widgetsConfiguration[i].method();
+                    }
+                }
+                
+            }
+        
+            /**
+             * Initialise the weather page
+             * It does the following tasks:
+             *      
+             * @returns void
+             */
+            var init = function(){
+            
+                loadWidgets();
+            
+            }
+        
+            // Main initialisation function
+            init();
+        
+        })();
+    </script>
+</body>
+</html>
