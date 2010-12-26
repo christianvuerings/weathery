@@ -98,7 +98,7 @@
                 $("#" + widget_data.template).tmpl(widget).appendTo("#container");
                 
                 var flickr_url = widget_data.flickr_url.replace("__CONDITION__",
-                                 current_condition.condition.data.replace("Partly", "")).replace("__RANDOM_WORD__",
+                                 current_condition.condition.data.replace(/partly |mostly /gi, "")).replace("__RANDOM_WORD__",
                                  $.randomArrayItem(widget_data.flickr_random_words));
                 loadFlickrWidget(flickr_url);
 
