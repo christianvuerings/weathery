@@ -19,14 +19,26 @@
     <script id="googleWidgetTemplate" type="text/x-jquery-tmpl">
         <div class="weathery-widget weathery-${id}">
             <h2>${name}</h2>
-            <h3>Current conditions</h3>
-            <ul>
-                <li><img src="${base_img_url}${data.current_conditions.icon.data}" /></b></li>
-                <li>Condition: <b>${data.current_conditions.condition.data}</b></li>
-                <li>Humidity: <b>${data.current_conditions.humidity.data}</b></li>
-                <li>Temperature: <b>${data.current_conditions.temp_c.data} &#176;C</b></li>
-                <li>Wind: <b>${data.current_conditions.wind_condition.data}</b></li>
-            </ul>
+            <div class="weathery-${id}-condition">
+                <h3>Current conditions</h3>
+                <ul>
+                    <li><img src="${base_img_url}${data.current_conditions.icon.data}" /></b></li>
+                    <li>Condition: <b>${data.current_conditions.condition.data}</b></li>
+                    <li>Humidity: <b>${data.current_conditions.humidity.data}</b></li>
+                    <li>Temperature: <b>${data.current_conditions.temp_c.data}&#176;C </b></li>
+                    <li>Wind: <b>${data.current_conditions.wind_condition.data}</b></li>
+                </ul>
+            </div>
+            <div class="weathery-${id}-condition">
+                <h3>Forecast conditions</h3>
+                {{each data.forecast_conditions}}
+                    <p>
+                        <img src="${base_img_url}${$value.icon.data}" /><br />
+                        ${$value.day_of_week.data} <br />
+                        ${$value.low.data}&#176;C  | ${$value.high.data}&#176;C 
+                    </p>
+                {{/each}}
+            </div>
         </div>
     </script>
 

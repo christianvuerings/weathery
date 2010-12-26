@@ -71,6 +71,25 @@
         
     }
     
+    var parseGoogleData = function(data){
+        var current_condition = data.query.results.xml_api_reply.weather.current_conditions;
+        var wind_data = current_condition.wind_condition.data;
+        var int_pattern=/[0-9]+/g;
+        var mpg_pattern=/[0-9]+ mph/g;
+        data.query.results.xml_api_reply.weather.current_conditions.wind_condition.data = 
+            wind_data.replace(mpg_pattern,
+                convertMilesToKm(wind_data.match(int_pattern))
+                + " km/h");
+
+        data.query.results.xml_api_reply.weather.current_conditions.humidity.data=
+            data.query.results.xml_api_reply.weather.current_conditions.humidity.data.replace(/humidity: /gi, "");
+
+        data.query.results.xml_api_reply.weather.current_conditions.wind_condition.data=
+            data.query.results.xml_api_reply.weather.current_conditions.wind_condition.data.replace(/wind: /gi, "");       
+
+        return data;
+    }
+    
     var loadGoogleWidget = function() {
 
         var id = this.id;
@@ -80,14 +99,7 @@
             "url": this.api,
             "success": function(data){
 
-                var current_condition = data.query.results.xml_api_reply.weather.current_conditions;
-                var wind_data = current_condition.wind_condition.data;
-                var int_pattern=/[0-9]+/g;
-                var mpg_pattern=/[0-9]+ mph/g;
-                data.query.results.xml_api_reply.weather.current_conditions.wind_condition.data = 
-                    wind_data.replace(mpg_pattern,
-                        convertMilesToKm(wind_data.match(int_pattern))
-                    + " km/h");
+                data = parseGoogleData(data);
 
                 var widget = {
                     "id": id,
@@ -95,11 +107,12 @@
                     "base_img_url": widget_data.base_img_url,
                     "data": data.query.results.xml_api_reply.weather
                 };
+                $.log(widget);
                 $("#" + widget_data.template).tmpl(widget).appendTo("#container");
                 
-                var flickr_url = widget_data.flickr_url.replace("__CONDITION__",
-                                 current_condition.condition.data.replace(/partly |mostly /gi, "")).replace("__RANDOM_WORD__",
-                                 $.randomArrayItem(widget_data.flickr_random_words));
+                var flickr_url = widget_data.flickr_url.replace(
+                    "__CONDITION__", data.query.results.xml_api_reply.weather.current_conditions.condition.data.replace(/partly |mostly /gi, "")).
+                        replace("__RANDOM_WORD__", $.randomArrayItem(widget_data.flickr_random_words));
                 loadFlickrWidget(flickr_url);
 
             }
