@@ -1,0 +1,2 @@
+(function(){var c={google:{method:function(){var b=this.name;$.ajax({url:this.api,success:function(a){a={name:b,data:a.query.results.xml_api_reply.weather};console.log(a.data);$("#googleWidgetTemplate").tmpl(a).appendTo("#container")}})},api:"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20xml%20where%20url%3D%22http%3A%2F%2Fwww.google.com%2Fig%2Fapi%3Fweather%3Doostduinkerke%22&format=json&callback=",template:"googleWidgetTemplate",name:"Google Weather"}};(function(){var b=["google"],
+a;for(a in c)c.hasOwnProperty(a)&&$.inArray(a,b)>-1&&c[a].method()})()})();
