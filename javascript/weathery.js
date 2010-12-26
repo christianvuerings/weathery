@@ -196,9 +196,9 @@
     };
 
     /**
-     * Load the Zoetgenot widget
+     * Load an iframe widget
      */
-    var loadZoetgenotWidget = function(){
+    var loadIframeWidget = function(){
         var id = this.id;
         var widget_data = this.data;
         
@@ -206,6 +206,38 @@
         
         $("#" + container_id).html($("<h2>" + widget_data.name + "</h2>"));
         $("#" + container_id).append($("<iframe />").attr(widget_data.iframe));
+    }
+
+    /**
+     * Load an mummtides widget
+     */
+    var loadMummtidesWidget = function(){
+        var id = this.id;
+        var widget_data = this.data;
+        
+        var container_id = createWidgetContainer(id);
+        
+        $.ajax({
+            "url": this.api,
+            "success": function(data){
+
+                if(data.query.count){
+
+                    var test="";
+
+                    for(var i=0;i<data.query.results.rss.channel.item.length;i++){
+                        test += data.query.results.rss.channel.item[i].description;
+                    }
+
+                    $("#" + container_id).html($("<h2>" + widget_data.name + "</h2>"));
+                    $("#" + container_id).append(test);
+
+                } else {
+                    $("#" + container_id).remove();
+                }
+
+            }
+        });
     }
 
     var widgetsConfiguration = [
@@ -232,7 +264,7 @@
         },
         {
             "id": "zoetgenot",
-            "method": loadZoetgenotWidget,
+            "method": loadIframeWidget,
             "data": {
                 "iframe": {
                     "scrolling": "no",
@@ -243,18 +275,43 @@
                 },
                 "name": "Zoet genot Webcam"
             }
+        },
+        {
+            "id": "windfinder",
+            "method": loadIframeWidget,
+            "data":{
+                "iframe": {
+                    "scrolling": "no",
+                    "height": "885px",
+                    "frameborder": "no",
+                    "width": "900px",
+                    "src": "http://www.windfinder.com/wind-cgi/forecast_print_hires.pl?STATIONSNR=koksijde"
+                },
+                "name": "Windfinder"
+            }
+        },
+        {
+            "id": "mummtides",
+            "method": loadMummtidesWidget,
+            "api": createYqlUrl('select channel from xml where url="http://www.mumm.ac.be/NL/Models/Operational/Tides/rss.php?koksijde"'),
+            "data": {
+                "name" : "Mumm.ac.be tides",
+                "template": "mummtidesWidgetTemplate"
+            }
         }
     ];
 
     var loadWidgets = function() {
 
         // TODO: check whether there is already an existing cookie
-        var toLoadWidgets = ["google", "wunderground", "zoetgenot"];
+        var toLoadWidgets = ["google", "wunderground", "zoetgenot", "windfinder", "mummtides"];
         
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++) {
             if($.inArray(widgetsConfiguration[i].id, toLoadWidgets) > -1) {
-                widgetsConfiguration[i].method();
+                try {
+                    widgetsConfiguration[i].method();
+                } catch(e){};
             }
         }
         

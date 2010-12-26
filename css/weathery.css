@@ -44,7 +44,6 @@ h1 {
     margin: 0 20px 20px 0;
     padding: 10px 10px 5px;
     overflow: auto;
-    width: 40%;
 }
 .weathery-widget h2 {
     color: rgba(70, 50, 26, 0.75);
@@ -83,5 +82,35 @@ h1 {
 }
 
 #weathery-zoetgenot {
-    width: 660px;
+    min-width: 660px;
+}
+
+#weathery-windfinder {
+    min-width: 900px;
+}
+
+#weathery-mummtides {
+    min-width: 280px;
+}
+#weathery-mummtides table {
+    border: none;
+    margin-bottom: 5px;
+}
+#weathery-mummtides table th {
+    border: none;
+    color: rgba(102, 81, 36, 0.75);
+    text-align:left;
+}
+#weathery-mummtides table tr {
+    border: none;
+    color: #000;
+}
+#weathery-mummtides table tr:nth-child(5),
+#weathery-mummtides table tr:nth-child(6) {
+    background: #fff;
+}
+#weathery-mummtides table tr td {
+    border: 1px solid #333;
+    padding: 5px;
+    text-align:left;
 }

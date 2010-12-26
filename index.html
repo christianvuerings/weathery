@@ -71,6 +71,20 @@
         </div>
     </script>
 
+    <script id="mummtidesWidgetTemplate" type="text/x-jquery-tmpl">
+        <h2>${name}</h2>
+        <div>
+            <ul>
+            {{each data.channel.item}}
+                <li>
+                    ${$value.title}
+                    ${$("<div/>").html($value.description).html()}
+                </li>
+            {{/each}}
+            </ul>
+        </div>
+    </script>
+
     <div id="container">
         &nbsp;
     </div>
