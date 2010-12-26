@@ -16,7 +16,16 @@
     var convertMilesToKm = function(miles) {
         return Math.round(miles * consts.MILES_TO_KM);
     }
-    
+
+    /**
+     * Convert fahrenheit to celcius
+     * @param {Number} miles The degrees in fahrenheit
+     * @return {Number} Return the degrees in Celcius
+     */
+    var convertFahrenheitToCelius = function(fahrenheit) {
+        return Math.round((fahrenheit -32) * (5/9));
+    }
+
     /**
      * Create a valid YQL URL by passing in a query
      * @param {String} query The query you want to convert into a valid yql url
@@ -72,7 +81,9 @@
     }
     
     var parseGoogleData = function(data){
+
         var current_condition = data.query.results.xml_api_reply.weather.current_conditions;
+        var forecast_conditions = data.query.results.xml_api_reply.weather.forecast_conditions;
         var wind_data = current_condition.wind_condition.data;
         var int_pattern=/[0-9]+/g;
         var mpg_pattern=/[0-9]+ mph/g;
@@ -81,13 +92,19 @@
                 convertMilesToKm(wind_data.match(int_pattern))
                 + " km/h");
 
+        for(var i=0; i<forecast_conditions.length; i++){
+            data.query.results.xml_api_reply.weather.forecast_conditions[i].low.data = convertFahrenheitToCelius(forecast_conditions[i].low.data);
+            data.query.results.xml_api_reply.weather.forecast_conditions[i].high.data = convertFahrenheitToCelius(forecast_conditions[i].high.data);
+        }
+
         data.query.results.xml_api_reply.weather.current_conditions.humidity.data=
-            data.query.results.xml_api_reply.weather.current_conditions.humidity.data.replace(/humidity: /gi, "");
+            current_condition.humidity.data.replace(/humidity: /gi, "");
 
         data.query.results.xml_api_reply.weather.current_conditions.wind_condition.data=
-            data.query.results.xml_api_reply.weather.current_conditions.wind_condition.data.replace(/wind: /gi, "");       
+            current_condition.wind_condition.data.replace(/wind: /gi, "");       
 
         return data;
+
     }
     
     var loadGoogleWidget = function() {
