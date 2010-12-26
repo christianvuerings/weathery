@@ -14,7 +14,6 @@ html {
 body {
     color: rgba(0, 0, 0, 0.95);
     font: 76%/150% "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Arial,sans-serif;
-    padding: 10px 20px 10px;
 }
 
 ul li {
@@ -27,8 +26,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
     color: rgba(239, 240, 190, 0.9);
-    padding: 10px 0px 0px;
+    padding: 20px 20px 40px;
     text-shadow: #000 1px 1px 1px;
+}
+/* Container */
+#container {
+    margin-left: 20px;
 }
 
 /* Widget */
@@ -37,8 +40,11 @@ h1 {
     -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    float:left;
+    margin: 0 20px 20px 0;
     padding: 10px;
     overflow: auto;
+    width: 40%;
 }
 .weathery-widget h2 {
     color: rgba(70, 50, 26, 0.75);
@@ -49,15 +55,21 @@ h1 {
     padding-bottom: 5px;
 }
 
-.weathery-google {
-    width: 52%;
+#weathery-google {
+    min-width: 470px;
 }
-.weathery-google p {
+#weathery-google p {
     float: left;
     padding-right: 10px;
     text-align: center;
 }
-.weathery-google-condition {
+#weathery-google .weathery-google-condition {
     float: left;
     padding-right: 10px;
+}
+
+#weathery-wunderground p {
+    float: left;
+    padding-right: 10px;
+    text-align: center;
 }

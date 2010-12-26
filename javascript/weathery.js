@@ -5,9 +5,13 @@
     const consts = {
         "MILES_TO_KM": 1.609344,
         "NAME_PREFIX": "weathery-",
-        "URL_YQL": "http://query.yahooapis.com/v1/public/yql?q=__QUERY__&format=json&callback="
+        "WIDGET_TEMPLATE_STANDARD": "standardWidgetTemplate",
+        "URL_YQL": "http://query.yahooapis.com/v1/public/yql?q=__QUERY__&env=store://datatables.org/alltableswithkeys&format=json&callback="
     };
-    
+
+    var $standardWidgetTemplate = $("#" + consts.WIDGET_TEMPLATE_STANDARD);
+    var $container = $("#container");
+
     /**
      * Convert miles/hour to km/hour
      * @param {Number} miles The number of miles you want to convert
@@ -38,7 +42,17 @@
     var createId = function(id){
         return consts.NAME_PREFIX + id;
     }
-    
+
+    var createWidgetContainer = function(id){
+        data = {
+            "id": createId(id)
+        }
+        if(! $container.has("#"+data.id).length){
+            $container.append($standardWidgetTemplate.tmpl(data));
+        }
+        return data.id;
+    }
+
     /**
      * Get the largest flickr photo that's available
      * @param {Object} photo A flickr photo object 
@@ -112,6 +126,8 @@
         var id = this.id;
         var widget_data = this.data;
 
+        var container_id = createWidgetContainer(id);
+
         $.ajax({
             "url": this.api,
             "success": function(data){
@@ -124,13 +140,55 @@
                     "base_img_url": widget_data.base_img_url,
                     "data": data.query.results.xml_api_reply.weather
                 };
-                $.log(widget);
-                $("#" + widget_data.template).tmpl(widget).appendTo("#container");
+                $("#" + container_id).html($("#" + widget_data.template).tmpl(widget));
                 
                 var flickr_url = widget_data.flickr_url.replace(
                     "__CONDITION__", data.query.results.xml_api_reply.weather.current_conditions.condition.data.replace(/partly |mostly /gi, "")).
                         replace("__RANDOM_WORD__", $.randomArrayItem(widget_data.flickr_random_words));
                 loadFlickrWidget(flickr_url);
+
+            }
+        });
+        
+    };
+
+    var parseWundergroundData = function(data){
+        
+        data.query.results.results[0].current_observation.wind_kmph = convertMilesToKm(data.query.results.results[0].current_observation.wind_mph);
+        
+        return data;
+    }
+
+    /**
+     * Load the Wunderground widget
+     */
+    var loadWundergroundWidget = function() {
+
+        var id = this.id;
+        var widget_data = this.data;
+
+        var container_id = createWidgetContainer(id);
+
+        $.ajax({
+            "url": this.api,
+            "success": function(data){
+
+                if(data.query.count){
+                    
+                    data = parseWundergroundData(data);
+
+                    var widget = {
+                        "id": id,
+                        "name": widget_data.name,
+                        "data0": data.query.results.results[0].current_observation,
+                        "data1": data.query.results.results[1].forecast.simpleforecast
+                    };
+
+                    $("#" + container_id).html($("#" + widget_data.template).tmpl(widget));
+
+                } else {
+                    $("#" + container_id).remove();
+                }
 
             }
         });
@@ -149,13 +207,22 @@
                 "flickr_url": createYqlUrl('select * from flickr.photos.search where text="__RANDOM_WORD__ __CONDITION__" and sort="relevance" and extras="url_o, url_l, url_m"'),
                 "flickr_random_words": ["Beach", "Sea", "Catamaran"]
             }
+        },
+        {
+            "id": "wunderground",
+            "method": loadWundergroundWidget,
+            "api": createYqlUrl('SELECT * FROM query.multi WHERE queries=\'select * from wunderground.currentobservation where location="Koksijde, Belgium"; select * from wunderground.forecast where location="Koksijde, Belgium"\''),
+            "data": {
+                "template": "wundergroundWidgetTemplate",
+                "name": "Wunderground Weather"
+            }
         }
     ];
 
     var loadWidgets = function() {
 
         // TODO: check whether there is already an existing cookie
-        var toLoadWidgets = ["google"];
+        var toLoadWidgets = ["google", "wunderground"];
         
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++) {
