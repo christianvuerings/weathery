@@ -195,6 +195,19 @@
         
     };
 
+    /**
+     * Load the Zoetgenot widget
+     */
+    var loadZoetgenotWidget = function(){
+        var id = this.id;
+        var widget_data = this.data;
+        
+        var container_id = createWidgetContainer(id);
+        
+        $("#" + container_id).html($("<h2>" + widget_data.name + "</h2>"));
+        $("#" + container_id).append($("<iframe />").attr(widget_data.iframe));
+    }
+
     var widgetsConfiguration = [
         {
             "id": "google",
@@ -216,13 +229,27 @@
                 "template": "wundergroundWidgetTemplate",
                 "name": "Wunderground Weather"
             }
+        },
+        {
+            "id": "zoetgenot",
+            "method": loadZoetgenotWidget,
+            "data": {
+                "iframe": {
+                    "scrolling": "no",
+                    "height": "519px",
+                    "frameborder": "no",
+                    "width": "651px",
+                    "src": "http://www.infometeo.be/allcams/campage5.php"
+                },
+                "name": "Zoet genot Webcam"
+            }
         }
     ];
 
     var loadWidgets = function() {
 
         // TODO: check whether there is already an existing cookie
-        var toLoadWidgets = ["google", "wunderground"];
+        var toLoadWidgets = ["google", "wunderground", "zoetgenot"];
         
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++) {

@@ -42,7 +42,7 @@ h1 {
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     float:left;
     margin: 0 20px 20px 0;
-    padding: 10px;
+    padding: 10px 10px 5px;
     overflow: auto;
     width: 40%;
 }
@@ -65,11 +65,23 @@ h1 {
 }
 #weathery-google .weathery-google-condition {
     float: left;
-    padding-right: 10px;
+    padding: 0 10px 5px 0;
 }
 
+#weathery-wunderground {
+    min-width: 550px;
+}
 #weathery-wunderground p {
     float: left;
     padding-right: 10px;
     text-align: center;
+    width:80px;
+}
+#weathery-wunderground .weathery-wunderground-condition {
+    float: left;
+    padding: 0 10px 5px 0;
+}
+
+#weathery-zoetgenot {
+    width: 660px;
 }
