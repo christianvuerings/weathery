@@ -263,6 +263,20 @@
             }
         },
         {
+            "id": "rainfallradar",
+            "method": loadIframeWidget,
+            "data": {
+                "iframe": {
+                    "scrolling": "no",
+                    "height": "513px",
+                    "frameborder": "no",
+                    "width": "550px",
+                    "src": "http://mijn.buienradar.nl/lokalebuienradar.aspx?voor=1&lat=51.11433&x=1&y=1&lng=2.68463&overname=2&zoom=9&naam=oostduinkerke&size=3&map=1"
+                },
+                "name": "Rainfall Radar"
+            }
+        },
+        {
             "id": "zoetgenot",
             "method": loadIframeWidget,
             "data": {
@@ -304,7 +318,7 @@
     var loadWidgets = function() {
 
         // TODO: check whether there is already an existing cookie
-        var toLoadWidgets = ["google", "wunderground", "zoetgenot", "windfinder", "mummtides"];
+        var toLoadWidgets = ["google", "wunderground", "zoetgenot", "windfinder", "mummtides", "rainfallradar"];
         
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++) {
@@ -324,9 +338,9 @@
      * @returns void
      */
     var init = function(){
-    
+
         loadWidgets();
-    
+
     }
 
     // Main initialisation function
