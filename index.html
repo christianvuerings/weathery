@@ -85,6 +85,26 @@
         </div>
     </script>
 
+    <script id="meteouvWidgetTemplate" type="text/x-jquery-tmpl">
+        <h2>${name}</h2>
+        <div>
+            <ul id="weathery-${id}-images">
+            {{each data}}
+                <li>
+                    <img src="${$value}" {{if $index !== 0}} style="display:none;"{{/if}} />
+                </li>
+            {{/each}}
+            </ul>
+            <ul id="weathery-${id}-links">
+            {{each data}}
+                <li>
+                    <a href="javascript:;">${$index + 1}</a>
+                </li>
+            {{/each}}
+            </ul>
+        </div>
+    </script>
+
     <div id="container">
         &nbsp;
     </div>

@@ -173,7 +173,7 @@
             "url": this.api,
             "success": function(data){
 
-                if(data.query.count){
+                if(data && data.query && parseInt(data.query.count, 10) > 0){
                     
                     data = parseWundergroundData(data);
 
@@ -209,6 +209,19 @@
     }
 
     /**
+     * Load an image widget
+     */
+    var loadImageWidget = function(){
+        var id = this.id;
+        var widget_data = this.data;
+        
+        var container_id = createWidgetContainer(id);
+        
+        $("#" + container_id).html($("<h2>" + widget_data.name + "</h2>"));
+        $("#" + container_id).append('<img src="' + widget_data.img + '" />');
+    }
+
+    /**
      * Load an mummtides widget
      */
     var loadMummtidesWidget = function(){
@@ -238,6 +251,41 @@
 
             }
         });
+    }
+    
+    /**
+     * Load the Meteo UV Widget
+     */
+    var loadMeteouvWidget = function(){
+        var id = this.id;
+        var widget_data = this.data;
+        
+        var container_id = createWidgetContainer(id);
+        
+        var data = [];
+        
+        var today = new Date();
+        
+        for(var i=0; i<4; i++){
+            var date = new Date();
+            date.setDate(today.getDate() + i);
+            data.push(widget_data.img_base_url.replace(
+                "__DATE__", date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate()));
+        }
+        
+        var widget = {
+            "id": id,
+            "name": widget_data.name,
+            "data": data
+        };
+        
+        $("#" + container_id).html($("#" + widget_data.template).tmpl(widget));
+        
+        // Add bindings
+        $("#weathery-"+ id +"-links a").bind("click", function(){
+            $("#weathery-meteouv-images img").hide();
+            $($("#weathery-meteouv-images img")[parseInt(this.text, 10)-1]).show();
+        })
     }
 
     var widgetsConfiguration = [
@@ -312,13 +360,30 @@
                 "name" : "Mumm.ac.be tides",
                 "template": "mummtidesWidgetTemplate"
             }
+        },
+        {
+            "id": "meteoonline",
+            "method": loadImageWidget,
+            "data": {
+                "img": "http://www.meteoonline.be/weersgrafiek/Europa/Belgi%C3%AB/Oostduinkerke/4054552",
+                "name": "Meteo Online Weather - Next 2 days"
+            }
+        },
+        {
+            "id": "meteouv",
+            "method": loadMeteouvWidget,
+            "data": {
+                "img_base_url": "http://webservice-nl-nl.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/uv_map300",
+                "template": "meteouvWidgetTemplate",
+                "name": "Meteo Online UV"
+            }
         }
     ];
 
     var loadWidgets = function() {
 
         // TODO: check whether there is already an existing cookie
-        var toLoadWidgets = ["google", "wunderground", "zoetgenot", "windfinder", "mummtides", "rainfallradar"];
+        var toLoadWidgets = ["google", "wunderground", "zoetgenot", "windfinder", "mummtides", "rainfallradar", "meteoonline", "meteouv"];
         
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++) {

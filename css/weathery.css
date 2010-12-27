@@ -19,6 +19,16 @@ body {
 ul li {
     list-style-type: none;
 }
+a:link, a:visited {
+    background-color: #fff;
+    color: rgb(64, 160, 213);
+    text-decoration: none;
+}
+a:hover {
+    background-color: #eff0be;
+    color: rgb(64, 196, 213);
+    text-decoration: underline;
+}
 
 /* Header */
 h1, h2, h3, h4, h5, h6 {
@@ -113,4 +123,16 @@ h1 {
     border: 1px solid #333;
     padding: 5px;
     text-align:left;
+}
+
+#weathery-meteouv #weathery-meteouv-links li {
+    float:left;
+}
+#weathery-meteouv #weathery-meteouv-links li a {
+    display: block;
+    padding: 2px 8px;
+    margin: 0 1px;
+}
+#weathery-meteouv #weathery-meteouv-links li a:link {
+    text-decoration: none;
 }
