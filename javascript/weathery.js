@@ -222,6 +222,26 @@
     }
 
     /**
+     * Load a live image widget
+     */
+    var loadLiveImageWidget = function(){
+        var id = this.id;
+        var widget_data = this.data;
+
+        var container_id = createWidgetContainer(id);
+
+        $("#" + container_id).html($("<h2>" + widget_data.name + "</h2>"));
+        $("#" + container_id).append('<img src="' + widget_data.img + '" />');
+
+        var date;
+
+        window.setInterval(function(){
+            date=new Date();
+            $("#" + container_id + " img").attr("src", widget_data.img + "?rand=" + date.getTime());
+        },1000);
+    }
+
+    /**
      * Load an mummtides widget
      */
     var loadMummtidesWidget = function(){
@@ -326,7 +346,7 @@
         },
         {
             "id": "zoetgenot",
-            "method": loadIframeWidget,
+            "method": loadLiveImageWidget,
             "data": {
                 "iframe": {
                     "scrolling": "no",
@@ -335,7 +355,7 @@
                     "width": "651px",
                     "src": "http://www.infometeo.be/allcams/campage5.php"
                 },
-                "img":"http://www.infometeo.be/img.php?iid=513",
+                "img":"http://178.118.2.6:8020/record/current.jpg",
                 "name": "Zoet genot Webcam"
             }
         },
