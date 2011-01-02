@@ -35,13 +35,13 @@
 </head>
 <body>
     <h1 id="title">Weather conditions in Oostduinkerke (Koksijde), Belgium</h1>
-    
+
     <script id="standardWidgetTemplate" type="text/x-jquery-tmpl">
         <div class="weathery-widget" id="${data.id}">
-            
+
         </div>
     </script>
-    
+
     <script id="googleWidgetTemplate" type="text/x-jquery-tmpl">
         <h2>${name}</h2>
         <div class="weathery-${id}-condition">
@@ -60,7 +60,7 @@
                 <p>
                     <img src="${base_img_url}${$value.icon.data}" /><br />
                     ${$value.day_of_week.data} <br />
-                    ${$value.low.data}&#176;C  | ${$value.high.data}&#176;C 
+                    ${$value.low.data}&#176;C  | ${$value.high.data}&#176;C
                 </p>
             {{/each}}
         </div>
