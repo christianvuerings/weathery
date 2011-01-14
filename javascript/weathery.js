@@ -403,9 +403,13 @@
 
     var loadWidgets = function() {
 
-        // TODO: check whether there is already an existing cookie
         var toLoadWidgets = ["google", "wunderground", "zoetgenot", "windfinder", "mummtides", "rainfallradar", "meteoonline", "meteouv"];
-        
+        if(localStorage.getItem('toLoadWidgets')) {
+            toLoadWidgets = JSON.parse(localStorage.getItem('toLoadWidgets'));
+        } else {
+            localStorage.setItem('toLoadWidgets', JSON.stringify(toLoadWidgets));
+        }
+
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++) {
             if($.inArray(widgetsConfiguration[i].id, toLoadWidgets) > -1) {
@@ -414,7 +418,7 @@
                 } catch(e){};
             }
         }
-        
+
     }
 
     /**
