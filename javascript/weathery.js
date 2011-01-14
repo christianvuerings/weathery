@@ -2,7 +2,7 @@
 // We wouldn't want to clutter the global namespace, do we?
 (function(){
     
-    const consts = {
+    var consts = {
         "MILES_TO_KM": 1.609344,
         "NAME_PREFIX": "weathery-",
         "WIDGET_TEMPLATE_STANDARD": "standardWidgetTemplate",
