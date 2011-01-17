@@ -125,6 +125,24 @@
         </div>
     </script>
 
+
+    <script id="selectContainerTemplate" type="text/x-jquery-tmpl">
+        <li{{if loaded}} class="selectContainer_loaded"{{/if}} id="selectContainer_item_${id}">
+            <a href="javascript:;">
+                ${name}
+            </a>
+        </li>
+    </script>
+
+    <div id="selectContainer">
+        <a href="javascript:;">
+           Choose Items
+        </a>
+        <ul>
+            &nbsp;
+        </ul>
+    </div>
+
     <div id="container">
         &nbsp;
     </div>
