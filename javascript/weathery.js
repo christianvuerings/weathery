@@ -414,7 +414,6 @@
 
         for(var i=0; i< widgetsConfiguration.length; i++){
             if(widgetsConfiguration[i].id === widgetid){
-                $.log(i);
                 return widgetsConfiguration[i];
             }
         }
