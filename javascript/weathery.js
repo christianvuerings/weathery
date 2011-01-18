@@ -95,6 +95,7 @@
                 $("html").css({
                     "background-image": "url(" + getLargestFlickrPhoto(randomPhoto) + ")"
                 });
+                $("body").removeClass("bodycolor");
             }
         });
 
