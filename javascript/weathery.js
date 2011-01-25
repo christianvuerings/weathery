@@ -362,7 +362,7 @@
                     "width": "651px",
                     "src": "http://www.infometeo.be/allcams/campage5.php"
                 },
-                "img":"http://178.118.2.6:8020/record/current.jpg",
+                "img":"http://178.118.14.22:8020/record/current.jpg",
                 "name": "Zoet genot Webcam"
             }
         },
