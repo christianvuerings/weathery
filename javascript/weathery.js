@@ -393,8 +393,9 @@
             "id": "meteoonline",
             "method": loadImageWidget,
             "data": {
-                "img": "http://www.meteoonline.be/weersgrafiek/Europa/Belgi%C3%AB/Oostduinkerke/4054552",
-                "name": "Meteo Online Weather"
+                "img": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/2011_01_28/sail_map300".replace("__DATE__",
+                (new Date()).getFullYear() + "_" + ((new Date()).getMonth()+1) + "_" + (new Date()).getDate()),
+                "name": "MeteoVista Sailing Conditions"
             }
         },
         {
@@ -403,7 +404,7 @@
             "data": {
                 "img_base_url": "http://webservice-nl-nl.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/uv_map300",
                 "template": "meteouvWidgetTemplate",
-                "name": "Meteo Online UV"
+                "name": "MeteoVista UV"
             }
         }
     ];
