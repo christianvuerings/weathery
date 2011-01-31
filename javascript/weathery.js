@@ -393,7 +393,7 @@
             "id": "meteoonline",
             "method": loadImageWidget,
             "data": {
-                "img": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/2011_01_28/sail_map300".replace("__DATE__",
+                "img": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/sail_map300".replace("__DATE__",
                 (new Date()).getFullYear() + "_" + ((new Date()).getMonth()+1) + "_" + (new Date()).getDate()),
                 "name": "MeteoVista Sailing Conditions"
             }
