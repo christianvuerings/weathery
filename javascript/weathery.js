@@ -504,6 +504,11 @@
 
     };
 
+    /**
+     * Load the select menu
+     * @private
+     * @param {Array} widgets A list of all the widgets that were selected by the user
+     */
     var loadSelect = function(widgets){
 
         var widgetsData = [];
