@@ -169,14 +169,14 @@ h1 {
     text-align:left;
 }
 
-#weathery-meteouv #weathery-meteouv-links li {
+.weathery-meteo-links li {
     float:left;
 }
-#weathery-meteouv #weathery-meteouv-links li a {
+.weathery-meteo-links li a {
     display: block;
     padding: 2px 8px;
     margin: 0 1px;
 }
-#weathery-meteouv #weathery-meteouv-links li a:link {
+.weathery-meteo-links li a:link {
     text-decoration: none;
 }

@@ -281,23 +281,23 @@
     };
 
     /**
-     * Load the Meteo UV Widget
+     * Load the Meteo Widget
      */
-    var loadMeteouvWidget = function(){
+    var loadMeteoWidget = function(){
         var id = this.id;
         var widget_data = this.data;
 
         var container_id = createWidgetContainer(id);
 
-        var data = [];
-
-        var today = new Date();
+        var data = [], date, days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
         for(var i=0; i<4; i++){
-            var date = new Date();
-            date.setDate(today.getDate() + i);
-            data.push(widget_data.img_base_url.replace(
-                "__DATE__", date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate()));
+            date = new Date();
+            date.setDate(date.getDate() + i);
+            data.push({
+                "url": widget_data.img_base_url.replace("__DATE__", date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate()),
+                "name": days[date.getDay()]
+            });
         }
 
         var widget = {
@@ -306,12 +306,14 @@
             "data": data
         };
 
-        $("#" + container_id).html($("#" + widget_data.template).tmpl(widget));
+        // Put the weathercontainer in a separate variable, this makes it load faster (caching selectors)
+        var $weathercontainer = $("#" + container_id);
+        $weathercontainer.html($("#" + widget_data.template).tmpl(widget));
 
         // Add bindings
-        $("#weathery-"+ id +"-links a").bind("click", function(){
-            $("#weathery-meteouv-images img").hide();
-            $($("#weathery-meteouv-images img")[parseInt(this.text, 10)-1]).show();
+        $(".weathery-meteo-links a", $weathercontainer).bind("click", function(){
+            // First hide all the images and then show the appropriate one
+            $($(".weathery-meteo-images img", $weathercontainer).hide()[parseInt(this.className, 10)-1]).show();
         })
     };
 
@@ -391,19 +393,19 @@
         },
         {
             "id": "meteoonline",
-            "method": loadImageWidget,
+            "method": loadMeteoWidget,
             "data": {
-                "img": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/sail_map300".replace("__DATE__",
-                (new Date()).getFullYear() + "_" + ((new Date()).getMonth()+1) + "_" + (new Date()).getDate()),
+                "img_base_url": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/sail_map300",
+                "template": "meteoWidgetTemplate",
                 "name": "MeteoVista Sailing Conditions"
             }
         },
         {
             "id": "meteouv",
-            "method": loadMeteouvWidget,
+            "method": loadMeteoWidget,
             "data": {
                 "img_base_url": "http://webservice-nl-nl.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/uv_map300",
-                "template": "meteouvWidgetTemplate",
+                "template": "meteoWidgetTemplate",
                 "name": "MeteoVista UV"
             }
         }

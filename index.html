@@ -105,20 +105,20 @@
         </div>
     </script>
 
-    <script id="meteouvWidgetTemplate" type="text/x-jquery-tmpl">
+    <script id="meteoWidgetTemplate" type="text/x-jquery-tmpl">
         <h2>${name}</h2>
         <div>
-            <ul id="weathery-${id}-images">
+            <ul class="weathery-meteo-images">
             {{each data}}
                 <li>
-                    <img src="${$value}" {{if $index !== 0}} style="display:none;"{{/if}} />
+                    <img src="${$value.url}" {{if $index !== 0}} style="display:none;"{{/if}} />
                 </li>
             {{/each}}
             </ul>
-            <ul id="weathery-${id}-links">
+            <ul class="weathery-meteo-links">
             {{each data}}
                 <li>
-                    <a href="javascript:;">${$index + 1}</a>
+                    <a href="javascript:;" class="${$index+1}">${$value.name}</a>
                 </li>
             {{/each}}
             </ul>
