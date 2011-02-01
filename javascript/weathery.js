@@ -313,7 +313,7 @@
         $weathercontainer.html($("#" + widget_data.template).tmpl(widget));
 
         // Add bindings
-        $(".weathery-meteo-links a", $weathercontainer).bind("click", function(){
+        $(".weathery-meteo-links a", $weathercontainer).bind("mouseenter", function(){
             // First hide all the images and then show the appropriate one
             $($(".weathery-meteo-images img", $weathercontainer).hide()[parseInt(this.className, 10)-1]).show();
         })
