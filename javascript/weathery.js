@@ -2,7 +2,9 @@
 (function(){
 
     var consts = {
+        "DAYS": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         "MILES_TO_KM": 1.609344,
+        "MONTHS": ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         "NAME_PREFIX": "weathery-",
         "WIDGET_TEMPLATE_STANDARD": "standardWidgetTemplate",
         "URL_YQL": "http://query.yahooapis.com/v1/public/yql?q=__QUERY__&env=store://datatables.org/alltableswithkeys&format=json&callback="
@@ -289,14 +291,14 @@
 
         var container_id = createWidgetContainer(id);
 
-        var data = [], date, days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        var data = [], date;
 
         for(var i=0; i<4; i++){
             date = new Date();
             date.setDate(date.getDate() + i);
             data.push({
                 "url": widget_data.img_base_url.replace("__DATE__", date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate()),
-                "name": days[date.getDay()]
+                "name": consts.DAYS[date.getDay()] + " " + date.getDate() + " " + consts.MONTHS[date.getMonth()]
             });
         }
 
@@ -397,7 +399,16 @@
             "data": {
                 "img_base_url": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/sail_map300",
                 "template": "meteoWidgetTemplate",
-                "name": "MeteoVista Sailing Conditions"
+                "name": "MeteoVista Sailing"
+            }
+        },
+        {
+            "id": "meteowind",
+            "method": loadMeteoWidget,
+            "data": {
+                "img_base_url": "http://webservice-nl-be.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/wind_map300",
+                "template": "meteoWidgetTemplate",
+                "name": "MeteoVista Wind"
             }
         },
         {
