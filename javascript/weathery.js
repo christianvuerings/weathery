@@ -342,6 +342,22 @@
             }
         },
         {
+            "id": "infometeowind",
+            "method": loadImageWidget,
+            "data": {
+                "img":"http://www.infometeo.be/wxhistshort.php?s=km",
+                "name": "Infometeo Koksijde Wind"
+            }
+        },
+        {
+            "id": "kycinfo",
+            "method": loadImageWidget,
+            "data": {
+                "img":"http://www.kyc.be/kycftp/kyc_weather.jpg",
+                "name": "KYC Info"
+            }
+        },
+        {
             "id": "rainfallradar",
             "method": loadIframeWidget,
             "data": {
