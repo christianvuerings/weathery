@@ -342,22 +342,6 @@
             }
         },
         {
-            "id": "infometeowind",
-            "method": loadImageWidget,
-            "data": {
-                "img":"http://www.infometeo.be/wxhistshort.php?s=km",
-                "name": "Infometeo Koksijde Wind"
-            }
-        },
-        {
-            "id": "kycinfo",
-            "method": loadImageWidget,
-            "data": {
-                "img":"http://www.kyc.be/kycftp/kyc_weather.jpg",
-                "name": "KYC Info"
-            }
-        },
-        {
             "id": "rainfallradar",
             "method": loadIframeWidget,
             "data": {
@@ -434,6 +418,22 @@
                 "img_base_url": "http://webservice-nl-nl.weeronline.nl/digits_map/Oostduinkerke/131/__DATE__/uv_map300",
                 "template": "meteoWidgetTemplate",
                 "name": "MeteoVista UV"
+            }
+        },
+        {
+            "id": "infometeowind",
+            "method": loadImageWidget,
+            "data": {
+                "img":"http://www.infometeo.be/wxhistshort.php?s=km",
+                "name": "Infometeo Koksijde Wind"
+            }
+        },
+        {
+            "id": "kycinfo",
+            "method": loadImageWidget,
+            "data": {
+                "img":"http://www.kyc.be/kycftp/kyc_weather.jpg",
+                "name": "KYC Info"
             }
         }
     ];
