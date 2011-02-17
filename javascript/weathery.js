@@ -320,7 +320,7 @@
     };
 
     var widgetsConfiguration = [
-        {
+        /*{
             "id": "google",
             "method": loadGoogleWidget,
             "api": createYqlUrl('select * from xml where url="http://www.google.com/ig/api?weather=oostduinkerke"'),
@@ -331,7 +331,7 @@
                 "flickr_url": createYqlUrl('select * from flickr.photos.search where text="__RANDOM_WORD__ __CONDITION__" and sort="relevance" and extras="url_o, url_l, url_m"'),
                 "flickr_random_words": ["Beach", "Sea", "Catamaran"]
             }
-        },
+        },*/
         {
             "id": "wunderground",
             "method": loadWundergroundWidget,
