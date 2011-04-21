@@ -429,11 +429,11 @@
             }
         },
         {
-            "id": "kycinfo",
+            "id": "sycodinfo",
             "method": loadImageWidget,
             "data": {
-                "img":"http://www.kyc.be/kycftp/kyc_weather.jpg",
-                "name": "KYC Info"
+                "img":"http://www.sycod.be/FTP/weather/broadcastsycod.jpg",
+                "name": "Sycod Info"
             }
         }
     ];
