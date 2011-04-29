@@ -126,6 +126,23 @@
         </div>
     </script>
 
+    <script id="tideWidgetTemplate" type="text/x-jquery-tmpl">
+        <h2>${name}</h2>
+        <div class="weathery-${id}-condition">
+            <h3>Tide Today</h3>
+            <ul>
+                <li>High Tide: <b>${data.today.hightide}</b></li>
+                <li>Low Tide: <b>${data.today.lowtide}</b></li>
+            </ul>
+        </div>
+        <div class="weathery-${id}-condition">
+            <h3>Tide Tomorrow</h3>
+            <ul>
+                <li>High Tide: <b>${data.tomorrow.hightide}</b></li>
+                <li>Low Tide: <b>${data.tomorrow.lowtide}</b></li>
+            </ul>
+        </div>
+    </script>
 
     <script id="selectContainerTemplate" type="text/x-jquery-tmpl">
         <li{{if loaded}} class="selectContainer_loaded"{{/if}} id="selectContainer_item_${id}">
