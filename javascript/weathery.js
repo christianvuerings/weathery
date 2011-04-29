@@ -463,6 +463,7 @@
                 "template": "mummtidesWidgetTemplate"
             }
         },
+        /*
         {
             "id": "tideinfo",
             "method": loadTideWidget,
@@ -472,6 +473,7 @@
                 "template": "tideWidgetTemplate"
             }
         },
+        */
         {
             "id": "meteoonline",
             "method": loadMeteoWidget,
