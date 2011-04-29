@@ -8,4 +8,11 @@
         var i = Math.floor(arr.length * (Math.random() % 1));
         return arr[i];
     }
-})(jQuery)
+})(jQuery);
+
+// Zero padding function
+(function($){
+    $.zeropadding = function(number){
+        return (number < 10 ? '0' : '') + number;
+    }
+})(jQuery);
