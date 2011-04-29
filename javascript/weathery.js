@@ -319,6 +319,76 @@
         })
     };
 
+    var parseTideDataEntry = function(entry){
+        var outputentry = $.trim(entry).replace("Hoogwater: ", "").replace("Laagwater: ", "").replace(/u/g, ":");
+
+        // Check whether it ends on "en"
+        if(outputentry.substr(-2) === "en"){
+            outputentry = outputentry.replace(" en", "");
+        } else {
+            outputentry = outputentry.replace(" en ", " - ");
+        }
+        return outputentry;
+    };
+
+    var parseTideData = function(data){
+
+        var todayarr = data.query.results.results[0].body.p.content.split('\n');
+        var tomorrowarr = data.query.results.results[1].body.p.content.split('\n');
+
+        var outputdata = {
+            "today": {
+                "hightide": parseTideDataEntry(todayarr[2]),
+                "lowtide": parseTideDataEntry(todayarr[4])
+            },
+            "tomorrow":{
+                "hightide": parseTideDataEntry(tomorrowarr[2]),
+                "lowtide": parseTideDataEntry(tomorrowarr[4])
+            }
+            
+        }
+    
+        return outputdata;
+    };
+
+    /**
+     * Load the tide widget
+     */
+    var loadTideWidget = function(){
+        var id = this.id;
+        var widget_data = this.data;
+        
+        var date = new Date();
+        var tomorrow = new Date();
+        tomorrow.setDate(date.getDate()+1);
+        var api = createYqlUrl('SELECT * FROM yql.query.multi WHERE queries=\'select * from html where url="' + this.api + '?loc=4&dag=' + $.zeropadding(date.getDate()) + '&maand=' + $.zeropadding(date.getMonth()+1) + '&jaar=' + date.getFullYear() + '"; select * from html where url="' + this.api + '?loc=4&dag=' + $.zeropadding(tomorrow.getDate()) + '&maand=' + $.zeropadding(tomorrow.getMonth()+1) + '&jaar=' + tomorrow.getFullYear() + '"\'');
+
+        var container_id = createWidgetContainer(id);
+        
+        $.ajax({
+            "url": api,
+            "success": function(data){
+
+                if(data && data.query && parseInt(data.query.count, 10) > 0){
+
+                    data = parseTideData(data);
+
+                    var widget = {
+                        "id": id,
+                        "name": widget_data.name,
+                        "data": data
+                    };
+
+                    $("#" + container_id).html($("#" + widget_data.template).tmpl(widget));
+
+                } else {
+                    $("#" + container_id).remove();
+                }
+
+            }
+        });
+    };
+
     var widgetsConfiguration = [
         /*{
             "id": "google",
@@ -394,6 +464,15 @@
             }
         },
         {
+            "id": "tideinfo",
+            "method": loadTideWidget,
+            "api": "http://www.agentschapmdk.be/getij.php",
+            "data": {
+                "name": "Tide Info",
+                "template": "tideWidgetTemplate"
+            }
+        },
+        {
             "id": "meteoonline",
             "method": loadMeteoWidget,
             "data": {
@@ -453,30 +532,30 @@
     }
 
     /**
-     * Get which widgets the users has previously enabled
+     * Get which widgets the users has previously disabled
      */
-    var getSavedWidgets = function(){
+    var getDisabledWidgets = function(){
 
-        if(localStorage.getItem('toLoadWidgets')){
-            return JSON.parse(localStorage.getItem('toLoadWidgets'));
+        if(localStorage.getItem('disabledWidgets')){
+            return JSON.parse(localStorage.getItem('disabledWidgets'));
         }
         return null;
 
     };
 
     /**
-     * Save the widgets to the localstorage
-     * @param {Array} widgets An array containing the widgets that the user want to load next time
+     * Save the disabled widgets to the localstorage
+     * @param {Array} widgets An array containing the widgets that the user doesn't want to load next time
      */
     var saveWidgets = function(widgets){
-        localStorage.setItem('toLoadWidgets', JSON.stringify(widgets));
+        localStorage.setItem('disabledWidgets', JSON.stringify(widgets));
     };
 
-    var saveLoadedWidgets = function(){
+    var saveDisabledWidgets = function(){
         var widgets = [];
 
-        $(".weathery-widget", $container).each(function(){
-            widgets.push(removeFromId(this.id));
+        $("li:not(.selectContainer_loaded)", $selectContainer).each(function(){
+            widgets.push(this.id.replace("selectContainer_item_", ""));
         });
 
         saveWidgets(widgets);
@@ -487,11 +566,11 @@
      */
     var loadWidgets = function(){
 
-        var savedWidgets = getSavedWidgets();
+        var savedWidgets = getDisabledWidgets();
 
         // Load all the widgets
         for(var i=0; i< widgetsConfiguration.length; i++){
-            if(!savedWidgets || $.inArray(widgetsConfiguration[i].id, savedWidgets) > -1){
+            if(!savedWidgets || $.inArray(widgetsConfiguration[i].id, savedWidgets) === -1){
                 try {
                     widgetsConfiguration[i].method();
                 } catch(e){
@@ -518,7 +597,7 @@
             widgetsData.push({
                 "id": widgetsConfiguration[i].id,
                 "name": widgetsConfiguration[i].data.name || "Undefined name",
-                "loaded": !widgets || $.inArray(widgetsConfiguration[i].id, widgets) > -1 ? true : false,
+                "loaded": !widgets || $.inArray(widgetsConfiguration[i].id, widgets) === -1 ? true : false,
             });
         }
 
@@ -539,7 +618,7 @@
                 findWidget(id).method();
                 $element.addClass("selectContainer_loaded");
             }
-            saveLoadedWidgets();
+            saveDisabledWidgets();
         });
 
     };
